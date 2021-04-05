@@ -1,21 +1,17 @@
 import { Client, EmbedFieldData, Message, MessageEmbed } from "discord.js";
-import { Command } from "../index";
+import { categories, Command } from "../index";
 import fs from "fs";
 import path from "path";
 import { code } from "../utils/embed-utils";
 
+interface CommandData extends Omit<Command, 'run'> {}
+
 export const command: Command = {
   name: "help",
   aliases: ["ayuda"],
-  type: "others",
+  category: "otros",
 
   run: async (client: Client, message: Message, args: string[]) => {
-    interface CommandData {
-      name: string;
-      type: Command["type"];
-      hidden: boolean;
-    }
-
     let commands: CommandData[];
 
     fs.readdir(path.join(__dirname), (err, files: string[]) => {
@@ -25,25 +21,18 @@ export const command: Command = {
         .filter((file: string) => file.endsWith(".js"))
         .map((file) => {
           const command: Command = require(`./${file}`).command;
-
-          return {
-            name: command.name,
-            type: command.type,
-            hidden: command.hidden,
-          };
+          const { name, category, hidden } = command
+          return { name, category, hidden }
         })
-        .filter((e) => e.hidden != true);
+        .filter((cmd) => cmd.hidden != true);
 
-      function findCommandsByType(type: CommandData["type"]) {
-        return commands.filter((cmd) => cmd.type === type).map((e) => e.name).join(", ");
+      function findCommandsByCategory(category: CommandData['category']) {
+        return commands.filter((cmd) => cmd.category === category).map((cmd) => cmd.name).join(", ");
       }
-
-      const fields: EmbedFieldData[] = [
-        { name: "Chat:", value: code(findCommandsByType("chat")) },
-        { name: "Vc:", value: code(findCommandsByType("vc")) },
-        { name: "Gd:", value: code(findCommandsByType("gd")) },
-        { name: "Otros:", value: code(findCommandsByType("others")) },
-      ];
+    
+      const fields:EmbedFieldData[] = categories.map(category => {
+        return { name: `${category}:`, value: code(findCommandsByCategory(category)) }
+      })
 
       const embed = new MessageEmbed()
         .setTitle("Comandos:")
@@ -53,4 +42,7 @@ export const command: Command = {
       message.channel.send({ embed });
     });
   },
-};
+}
+
+
+

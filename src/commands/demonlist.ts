@@ -4,7 +4,7 @@ import { getDemonByName, getDemonByTop } from "../apis/demonlist/demonlist.js";
 
 export const command: Command = {
   name: "demonlist",
-  type: 'gd',
+  category: "gd",
 
   run: async (client: Client, message: Message, args: string[]) => {
     let entrada: string = args.join(" ");
@@ -16,19 +16,22 @@ export const command: Command = {
       getDemon = getDemonByName;
     }
 
-    getDemon(entrada).then((res) => {
-        const creators = res.creators.map((creator) => creator.name).join(", ");
-        const videoId = res.video.slice(-11); //id del video
+    try {
+      const demon = await getDemon(entrada);
 
-        const embedDemon = new MessageEmbed()
-          .setTitle(`# ${res.position} - ${res.name}`)
-          .setDescription(`Por: ${creators} [link del video](${res.video})`)
-          .setImage(`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`)
-          .setColor("RANDOM")
-          .setFooter(`Verificado por ${res.verifier.name}`);
+      const creators = demon.creators.map((creator) => creator.name).join(", ");
+      const videoId = demon.video.slice(-11); //id del video
 
-        message.channel.send(embedDemon);
-      })
-      .catch(() => message.channel.send("no se encontró el demon"));
+      const embedDemon = new MessageEmbed()
+        .setTitle(`# ${demon.position} - ${demon.name}`)
+        .setDescription(`Por: ${creators} [link del video](${demon.video})`)
+        .setImage(`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`)
+        .setColor("RANDOM")
+        .setFooter(`Verificado por ${demon.verifier.name}`);
+
+      message.channel.send(embedDemon);
+    } catch {
+      message.channel.send("no se encontró el demon");
+    }
   },
 };

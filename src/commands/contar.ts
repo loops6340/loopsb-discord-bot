@@ -4,7 +4,7 @@ import { Command } from "../index";
 export const command:Command = {
   name: "contar",
   aliases: ["cuenta"],
-  type: 'others',
+  category: 'otros',
 
   run: async (client: Client, message: Message, args: string[]) => {
     enum valor {

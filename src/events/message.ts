@@ -1,8 +1,7 @@
 import { Message } from "discord.js";
 
 import config from '../botconfig.json';
-import comparators from "./message-arrays/comparators";
-import randomAnswers from "./message-arrays/random-answers"
+import responses from './responses.json';
 import { randomElement } from '../utils/others'
 import { client, EventFunction } from "../index";
 
@@ -41,33 +40,36 @@ export const event:EventFunction = {
     //Comandos sin prefix
 
     if (message.mentions.has(client.user.id)) {
-      message.channel.send(randomElement(randomAnswers.mentionsResponses));
+      message.channel.send(randomElement(responses.responsesToMentions));
     }
 
-    /* ejemplo: args = ["hola", "loops"], bueno aquí agarramos el [1] que es loops,
-    en los arrays empezamos desde el 0 */
+    /* 
+      Ya que los posibles saludos que pordría dar un usuario son muchos, decidí ponerlos en un
+      archivo json por separado.
 
-    if (someMessageBeginsWith(comparators.userRegards)) {
-      if (someMessageInclude(message.guild.members.cache.map(user => user.displayName))) {
+      Tambien hice eso con las posibles respuestas que el bot le dará
+    */
+
+    if (someMessageBeginsWith(responses.regards.userRegards)) {
+      if (someMessageInclude(message.guild.members.cache.map(user => user.nickname))) {
         message.channel.send(`Que tal!`) 
       } else {
-        message.channel.send(randomElement(randomAnswers.botRegards))
+        message.channel.send(randomElement(responses.regards.botRegards))
       }
     }
 
-    /* Estos ya son comparadores normales de toda la vida que ya conocen, si algo
-    empieza que este string, da esta respuesta, por cierto, esto tiene que ver
-    con el server que ya les mencioné en el readme
+    /* Estos ya son comparadores que ya conocen, si algo
+    empieza que este string, da esta respuesta
     */
 
-    if (message.content.toLowerCase().startsWith("co2")) {
+    if (message.content.toLowerCase().startsWith("Hola bot como estás")) {
       message.channel.send(
-        "un grande co2, el mejor usuario de la historia del ytph"
+        "Yo estoy muy bien, ¡Gracias por preocuparte!"
       );
     }
 
-    if (message.content.toLowerCase().includes("marisa")) {
-      message.channel.send("marisa");
+    if (message.content.toLowerCase().includes("server muerto")) {
+      message.channel.send("¿Como que server muerto?");
     }
 
     /* comandos con prefix, en esta parte van los comandos, lo de abajo es el command 
@@ -75,9 +77,7 @@ export const event:EventFunction = {
     al final de todo funciona igual que cuando escribimos el clasico if(command === 'algo')
     */
 
-    if (!message.content.startsWith(prefix)) return;
-
-
+    if (!message.content.startsWith(prefix)) return
   
     const command =
       client.commands.get(command_name) ||
@@ -90,8 +90,7 @@ export const event:EventFunction = {
     try {
       command.run(client, message, args);
     } catch (error) {
-      console.error(error);
-      message.channel.send("el mejor bot de todos ha tenido un error. f");
+      throw new Error("Hubo un problema para cargar los comandos");
     }
   },
 };

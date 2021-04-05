@@ -5,7 +5,7 @@ import path from "path";
 export const command: Command = {
   
   name: "sans",
-  type: 'vc',
+  category: 'vc',
 
   run: async (client: Client, message: Message, args: string[]) => {
   

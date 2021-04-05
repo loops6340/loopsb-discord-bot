@@ -1,54 +1,56 @@
-import { Client, Message } from "discord.js";
+import { Client, Message, User } from "discord.js";
 import { Command } from "../index";
+import { prefix } from '../botconfig.json'
 
 export const command: Command = {
-  name: "spam",
-  aliases: ["dm"],
-  type: 'chat',
+  name: "dm",
+  aliases: ["spam"],
+  category: 'chat',
 
   run: async (client: Client, message: Message, args: string[]) => {
 
-    interface opciones {
-      persona: string;
+    interface Options {
+      user: User;
       veces: number;
       mensajeSpam: string;
     }
 
-    async function spam(opciones: opciones) {
+    async function spam(options: Options) {
 
-      if (!opciones.persona || !opciones.veces || !opciones.mensajeSpam)
-        return "escribe correctamente el comando, se escribe: ``f!spam {id} {veces} {mensaje}``";
+      if (!options.user || !options.veces || !options.mensajeSpam)
+        return `escribe correctamente el comando, se escribe: \`\`${prefix}spam {id} {veces} {mensaje}\`\``;
         
-      if (opciones.veces > 50)
-        return "señor, eso es mucho para mi, me puedo caer :c";
-        
-      for (let i = 0; i < opciones.veces; i++) {
-        try {
-          client.users.cache.get(opciones.persona).send(opciones.mensajeSpam).catch(() => {
-            console.log("hubo un error")
-            return "pues no puedo mandarle mensajes a esta persona"
-          })
-        } catch (e) {
-          return "No puedo enviar mensajes a este usuario"
+      if (options.veces > 50)
+        return "Escribiste un número demasiado grande (máximo 50)";
+      
+      if (options.veces < 0)
+        return "Ya se que pusiste un número negativo, no te hagas el gracioso";
+
+      try {
+        for (let i = 0; i < options.veces; i++) {
+          options.user.send(options.mensajeSpam)
         }
-      }
-      
-      return `Enviando MD's a ${(await client.users.fetch(opciones.persona)).username} ${opciones.veces} veces`
-      
+        return `Enviando MD's a ${options.user.username} ${options.veces} veces`
+     } catch {
+      return 'parece que este usuario tiene bloqueada la opción de recibir mis mensajes'
+     }
     }
 
-    let discordOpciones = {
-      persona: args[0],
-      veces: parseInt(args[1]),
-      mensajeSpam: args.slice(2).join(" "),
-    };
 
     try {
-      message.channel.send(await spam(discordOpciones));
-    } catch (e) {
-            
-      console.log("hubo un error")
-      message.channel.send("hubo un error, revisa bien si pusiste las cosas en el orden correcto, gracias")
+
+      let discordoptions:Options = {
+        user: await client.users.fetch(args[0]),
+        veces: parseInt(args[1]),
+        mensajeSpam: args.slice(2).join(" "),
+      };
+      
+      message.channel.send(await spam(discordoptions));
+    } catch {
+      message.channel.send(
+        `pues parece que esta persona no existe, o quizá escribiste mal el comando: 
+        \`\`${prefix}spam {id} {veces} {mensaje}\`\` `
+      )
     }
 
   },

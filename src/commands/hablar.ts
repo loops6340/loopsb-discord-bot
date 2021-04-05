@@ -1,16 +1,24 @@
 import { Client, Message } from "discord.js";
 import { Command } from "../index";
-const chatbot = require("espchatbotapi");
+
+
+// Respuestas moderadas = 0, todas las respuestas = 1
+
+interface ChatBot {
+  hablar(text:string, responseFilter: 0 | 1): Promise<string>
+}
+
+const chatbot:ChatBot = require("espchatbotapi")
 
 export const command: Command = {
   name: "hablar",
   aliases: ["say"],
-  type: 'chat',
+  category: 'chat',
 
   run: async (client: Client, message: Message, args: string[]) => {
-    const texto = args.join(" ");
-    chatbot.hablar(texto, 1).then((respuesta: string) => {
-      message.channel.send(respuesta);
-    });
+    const text = args.join(" ");
+    const response = await chatbot.hablar(text, 1)
+    message.channel.send(response)  
   },
-};
+}
+

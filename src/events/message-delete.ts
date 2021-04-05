@@ -25,13 +25,24 @@ export const event:EventFunction = {
         .setAuthor(message.author.username, message.author.avatarURL())
         .setFooter(`${message.guild.name} | #${message.channel.name}`);
 
-      ///algún canal de algún server donde se guarden todos los logs de todos los mensajes de todos los servers
-      const loggingChannel = client.channels.cache.get(process.env.LOGGINGCHANNEL); 
+      const logsChannel = message.guild.channels.cache.find(channel => channel.name.includes('logs'));
+
+      if(logsChannel !== undefined) {
+        (logsChannel as TextChannel).send(delEmbed);
+      } else {
+        return console.log('canal no encontrado')
+      }
       //tambien pueden cambiarlo por:
-      //const loggingChannel = message.guild.channels.cache.find(channel => channel.name.includes('registro'));
-      if (loggingChannel == undefined)
-        return;      
-      (loggingChannel as TextChannel).send(delEmbed);
+      /* 
+      algún canal de algún server donde se guarden todos los logs de todos los mensajes de todos los servers
+      const logsChannel = client.channels.cache.get(process.env.LOGSCHANNEL); 
+      if (logsChannel == undefined)
+      return;      
+      (logsChannel as TextChannel).send(delEmbed);
+      */
+
+      
+     
     }
   }
 

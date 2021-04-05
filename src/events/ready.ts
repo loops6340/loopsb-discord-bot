@@ -1,4 +1,5 @@
 import { client, EventFunction } from "..";
+import { prefix } from '../botconfig.json'
 
 export const event:EventFunction = {
 
@@ -11,10 +12,11 @@ export const event:EventFunction = {
     client.user.setPresence({
       status: "online",
       activity: {
-        name: "*help | Hecho por loops#6340 e ides#0001",
+        name: `${prefix}help | Hecho por loops#6340 e ides#0001`,
         type: "PLAYING",
       },
     });
+   
   },
   
 };

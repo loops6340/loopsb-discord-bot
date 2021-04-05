@@ -1,0 +1,54 @@
+{
+    "regards":{
+
+      "botRegards": [ 
+        "¡Hola!",
+        "alo",
+        "¡Que tal!",
+        "¡Muy buenas!",
+        "¡Buena!",
+        "wenaa",
+        "hola po",
+        "Que tal!!!!",
+        "genial",
+        "Hola xd",
+        "Hola jkaskj",
+        "¡Que bien!",
+        "uwu que tal",
+        "buen dia señor",
+        "Buenas que tal",
+        "Que genial que estés aquí",
+        "ta bien",
+        "wena que viniste",
+        "Pues que tal",
+        "Me alegro",
+        "viniste en el mejor momento",
+        "GG!",
+        "buenas jsjs",
+        "se te extrañaba por aquí",
+        "jojola buenas!",
+        "que tal pues",
+        "es increible que estés aquí, wena!",
+        "pues yo me alegro de verte",
+        "no sabes cuanto te extrañaba",
+        "siempre es un gusto hablar contigo"
+      ],
+
+      "userRegards": [
+        "hola",
+        "ola",
+        "buenas",
+        "ya vine",
+        "ya llegue",
+        "ya estoy acá",
+        "buen dia"
+      ]
+    
+    },
+    
+    "responsesToMentions": [
+      "hola amigos de youtube",
+      "gracias por mencionarme",
+      "que pasa ¿Puedo ayudarte en algo?"
+    ]
+}

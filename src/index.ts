@@ -7,12 +7,16 @@ dotenv.config()
 
 import fs from "fs";
 
+//Cambiar a las categorias que requiera su bot
 
-export interface Command {
-  
+export const categories = ["chat", "vc", "gd", "otros"] as const 
+
+type Category = typeof categories[number]
+
+export interface Command { 
   name: string;
   aliases?: string[];
-  type: 'gd' | 'developer' | 'chat' | 'vc' | 'others';
+  category: Category
   hidden?: boolean;
   run(client: Client, message: Message, args: string[]): Promise<void> | void | Message | Promise<Message>
 }
@@ -22,10 +26,9 @@ export class Client extends DefaultClient {
 }
 
 export const client: Client = new Client();
-
 client.commands = new Collection();
 
-const commandFiles = fs
+const commandFiles:string[] = fs
   .readdirSync(path.join(__dirname, "./commands/"))
   .filter((file: string) => file.endsWith(".js"));
 
@@ -47,22 +50,23 @@ fs.readdir(path.join(__dirname, "./events/"), (err, files: string[]) => {
   files
     .filter((file: string) => file.endsWith(".js"))
     .forEach((file) => {
-      const eventFunction:EventFunction = require(`./events/${file}`).event;
-      
-      if (eventFunction.disabled) return;
 
-      const event = eventFunction.event;
+      const { disabled, event, once, run }:EventFunction = require(`./events/${file}`).event;
+      
+      if (disabled) return;
+
       const emitter = client;
-      const once = eventFunction.once;
     
       try {
+
         emitter[once ? "once" : "on"]<typeof event>(event, (...args: ClientEvents[typeof event]) =>
-          eventFunction.run(...args)
+          run(...args)
         );
       } catch (error) {
         console.error(error.stack);
       } 
     }); 
 });
+
 
 client.login(process.env.TOKEN);

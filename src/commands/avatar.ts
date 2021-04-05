@@ -10,7 +10,7 @@ import { Command } from "../index";
 export const command: Command = {
   name: "avatar",
   aliases: ["pfp"],
-  type: 'chat',
+  category: 'chat',
 
   run: async (client: Client, message: Message, args: string[]) => {
     let user: User;
@@ -40,20 +40,18 @@ export const command: Command = {
     if (user.displayAvatarURL({ dynamic: true }).includes(".gif")) {
       format = avatarLinkInEmbed("gif");
     } else {
-
-      const png = avatarLinkInEmbed("png")
-      const jpg = avatarLinkInEmbed("jpg")
-      const webp = avatarLinkInEmbed("webp")
-      const jpeg = avatarLinkInEmbed("jpeg")
-      format = `${png} | ${jpg} | ${webp} | ${jpeg}`;
+      const formats = ['png', 'jpg', 'webp', 'jpeg']
+      format = formats.map((format) => {
+        return avatarLinkInEmbed(format as AllowedImageFormat)
+      }).join(' | ')
+    
     }
 
     const embed = new MessageEmbed()
-      .setAuthor(`${user.tag}'s avatar`, user.displayAvatarURL())
       .setDescription(format)
       .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
+      .setFooter(`${user.tag}'s avatar`, user.displayAvatarURL())
       .setColor(0xafeeee);
-
     message.channel.send({ embed });
   },
 };

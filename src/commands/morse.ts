@@ -1,44 +1,44 @@
 import { Client, Message } from "discord.js";
 import { Command } from "../index";
 const { encode, decode } = require("morse-decoder");
+import { prefix } from "../botconfig.json";
 
 export const command: Command = {
   
   name: "morse",
   aliases: ["morsetraducir"],
-  type: 'others',
+  category: 'otros',
 
   run: async (client: Client, message: Message, args: string[]) => {
 
-    interface opciones {
-      funcionDeSalida: string;
-      textoDeEntrada: string;
+    interface MorseCommand{
+      option: string;
+      arguments: string;
     }
-    enum argsMorse {
-      funcionDeSalida, //0
-      textoDeEntrada, //1
-    }
-    function convertirMorse(interf: opciones) {
-      switch (interf.funcionDeSalida) {
+    
+    function convert(morse:MorseCommand) {
+      switch (morse.option) {
         case "-e":
-          message.channel.send(encode(interf.textoDeEntrada));
+          const encodedText = encode(morse.arguments)
+          message.channel.send(encodedText);
           break;
         case "-d":
-          message.channel.send(decode(interf.textoDeEntrada).toLowerCase()); //por alguna razon salia con mayúsculas asi que
+          const decodedText = decode(morse.arguments).toLowerCase()
+          message.channel.send(decodedText); //por alguna razon salia con mayúsculas asi que
           break;
         default:
           message.channel.send(
-            "escribe bien el comando: f!morse {-e (encode) o -d (decode)} {texto}"
+            `escribe bien el comando: ${prefix}morse -e (encode) o -d (decode) {texto}`
           );
           break;
       }
     }
 
-    let entradaDiscord = {
-      funcionDeSalida: args[argsMorse.funcionDeSalida],
-      textoDeEntrada: args.slice(argsMorse.textoDeEntrada).join(" "),
+    let entry:MorseCommand = {
+      option: args[0],
+      arguments: args.slice(1).join(" "),
     };
 
-    convertirMorse(entradaDiscord);
+    convert(entry);
   },
 };

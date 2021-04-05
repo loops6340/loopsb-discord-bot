@@ -4,7 +4,7 @@ import { Command } from "../index";
 export const command: Command = {
  
   name: "invitar",
-  type: 'others',
+  category: 'otros',
 
   run: async (client: Client, message: Message, args: string[]) => {
     const embed = new MessageEmbed()

@@ -4,7 +4,7 @@ import { Command } from "../index";
 export const command: Command = {
 
   name: "ss",
-  type: 'others',
+  category: 'otros',
   
   run: async (client: Client, message: Message, args: string[]) => {
     function screenshot(url: string) {

@@ -6,28 +6,26 @@ export const command: Command = {
   
   name: "gdlogo",
   aliases: ["gdcolon", "gdjuniper", "gdloops"],
-  type: 'gd',
+  category: 'gd',
 
   run: async (client: Client, message: Message, args: string[]) => {
+    
     if (!args[0]) return message.channel.send("No pusiste nada :c");
 
-    let texto = args.join("%20");
+    const text = args.join("%20");
 
-    /* Esto lo pongo porque la imagen demora aalgo de tiempo en crearse */
+    /* Esto lo pongo porque la imagen demora algo de tiempo en crearse */
 
-    async function createImage(logoName: string) {
-      const loadImage = await axios.get(
-        `https://gdcolon.com/tools/gdlogo/img/${logoName}`
-      );
-      return loadImage;
-    }
+    const loadImage = await axios.get(
+      `https://gdcolon.com/tools/gdlogo/img/${text}`
+    );
+    
+    const attachment = new MessageAttachment(
+      `https://gdcolon.com/tools/gdlogo/img/${text}`,
+      "logo.png"
+    );
+    
+    message.channel.send(attachment);
 
-    createImage(texto).then(() => {
-      const attachment = new MessageAttachment(
-        `https://gdcolon.com/tools/gdlogo/img/${texto}`,
-        "logo.png"
-      );
-      message.channel.send(attachment);
-    });
   },
 };
