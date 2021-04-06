@@ -10,9 +10,9 @@ export const event:EventFunction = {
 
   run(message: Message) {
    
-    const contenidoIrrelevante = ["", "n", "ok, processing"];
+    const irrelevantContent = ["", "n", "ok, processing"];
     
-    if (contenidoIrrelevante.some((palabra) => palabra === message.content))
+    if (irrelevantContent.some((word) => word === message.content))
       return;
 
     if (message.channel.type === "text") {

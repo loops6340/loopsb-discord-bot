@@ -62,6 +62,7 @@ fs.readdir(path.join(__dirname, "./events/"), (err, files: string[]) => {
         emitter[once ? "once" : "on"]<typeof event>(event, (...args: ClientEvents[typeof event]) =>
           run(...args)
         );
+        
       } catch (error) {
         console.error(error.stack);
       } 
