@@ -1,6 +1,7 @@
 import { Client, Message, MessageEmbed } from "discord.js";
 import { Command } from "../index";
 import { getDemonByName, getDemonByTop } from "../apis/demonlist/demonlist.js";
+import { DemonResultsByName, DemonResultsByPosition } from "../apis/demonlist";
 
 export const command: Command = {
   name: "demonlist",
@@ -8,7 +9,7 @@ export const command: Command = {
 
   run: async (client: Client, message: Message, args: string[]) => {
     let entrada: string = args.join(" ");
-    let getDemon;
+    let getDemon:typeof getDemonByTop | typeof getDemonByName
 
     if (parseInt(entrada)) {
       getDemon = getDemonByTop;

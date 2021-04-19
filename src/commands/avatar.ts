@@ -48,9 +48,9 @@ export const command: Command = {
     }
 
     const embed = new MessageEmbed()
-      .setDescription(format)
+      .setAuthor(`${user.tag}'s avatar`, user.displayAvatarURL())
       .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
-      .setFooter(`${user.tag}'s avatar`, user.displayAvatarURL())
+      .setFooter(format)
       .setColor(0xafeeee);
     message.channel.send({ embed });
   },
