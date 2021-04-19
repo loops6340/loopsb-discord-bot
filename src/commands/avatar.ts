@@ -44,13 +44,12 @@ export const command: Command = {
       format = formats.map((format) => {
         return avatarLinkInEmbed(format as AllowedImageFormat)
       }).join(' | ')
-    
     }
 
     const embed = new MessageEmbed()
       .setAuthor(`${user.tag}'s avatar`, user.displayAvatarURL())
       .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
-      .setFooter(format)
+      .setDescription(format)
       .setColor(0xafeeee);
     message.channel.send({ embed });
   },
