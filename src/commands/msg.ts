@@ -18,7 +18,7 @@ export const command: Command = {
   
     /* No cualquiera puede ejecutar esto, si la persona no está autorizada se retorna 
     este mensaje y no se analiza más del comando */
-    if (!config.owner_ids.some((id: string) => message.author.id == id))
+    if (!config.ownerIds.some((id: string) => message.author.id == id))
       return message.channel.send(
         "no estás autorizado para ejecutar este comando :p"
       );

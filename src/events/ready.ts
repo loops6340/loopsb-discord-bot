@@ -1,22 +1,24 @@
 import { client, EventFunction } from "..";
-import { prefix } from '../botconfig.json'
+import { prefix, ownerIds } from "../botconfig.json";
 
-export const event:EventFunction = {
-
+export const event: EventFunction = {
   event: "ready",
 
   once: false,
 
-  run() {
+  async run() {
+    const owners = await Promise.all(ownerIds.map(async (owner) => {
+      const user = await client.users.fetch(owner);
+      return user.tag;
+    }));
+
     console.log("Bot ejecutado correctamente.");
-    client.user.setPresence({
+    await client.user.setPresence({
       status: "online",
       activity: {
-        name: `${prefix}help | Hecho por loops#6340 e ides#0047`,
+        name: `${prefix}help | Hecho por ${owners.join(", ")}`,
         type: "PLAYING",
       },
     });
-   
   },
-  
 };
