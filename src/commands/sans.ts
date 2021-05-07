@@ -12,8 +12,8 @@ export const command: Command = {
     const duración = args[0];
 
     async function play(file: string) {
-      if (message.member.voice.channel) {
-        const connection = await message.member.voice.channel.join();
+      if (message.member?.voice.channel) {
+        const connection = await message.member?.voice.channel.join();
         connection.play(path.join(__dirname, `../../audio/${file}`));
       }
     }

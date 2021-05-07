@@ -12,9 +12,11 @@ export const command: Command = {
 
     let random = Math.round(Math.random() * 100);
 
+    var emojis = ['🐹', '💌', '🤨', '💦', '😮', '😏'];
+    var r_emoji = emojis[Math.round(Math.random() * emojis.length)];
     const text = args.join(" ");
     const embed = new MessageEmbed()
-      .setTitle(`${text} r8 machine`)
+      .setTitle(`${r_emoji} ${text} r8 machine`)
       .setDescription(`Tu eres ${random}% ${text}`)
       .setColor("RANDOM");
 

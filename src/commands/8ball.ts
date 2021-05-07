@@ -26,7 +26,7 @@ export const command:Command = {
     let random = randomElement(respuesta)
     
     const embed = new MessageEmbed()
-      .setThumbnail(client.user.avatarURL())
+      .setThumbnail(client.user?.displayAvatarURL()!)
       .addField("A su pregunta", `${text}`)
       .addField("Mi respuesta", `${random}`)
       .setColor("RANDOM");

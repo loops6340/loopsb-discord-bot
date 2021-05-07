@@ -1,4 +1,4 @@
-import { getDemonByTop } from "../apis/demonlist/demonlist";
+import { getDemonByPosition } from "demonlist";
 import {
   Client,
   CollectorFilter,
@@ -8,6 +8,7 @@ import {
   User,
 } from "discord.js";
 import { Command } from "../index";
+import { Embed } from "../utils/embed-utils";
 
 export const command: Command = {
   name: "ruleta",
@@ -22,7 +23,7 @@ export const command: Command = {
         
         let random = Math.round(Math.random() * 200);
 
-        const demon = await getDemonByTop(random)
+        const demon = await getDemonByPosition(random)
 
         const creators = demon.creators.map((creator) => creator.name).join(", ");
 
@@ -32,7 +33,7 @@ export const command: Command = {
 
         const embed = new MessageEmbed()
           .setTitle(`# ${demon.position} - ${demon.name}`)
-          .setDescription(`Por: ${creators} [link del video](${demon.video})`)
+          .setDescription(`Por: ${creators} ${Embed.link('Link del video', demon.video)}`)
           .setImage(videoThumbnail)
           .setColor("RANDOM")
           .setFooter(`Verificado por ${demon.verifier.name}`);

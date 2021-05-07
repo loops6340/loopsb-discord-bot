@@ -31,7 +31,7 @@ export interface Command {
 }
 
 export class Client extends DefaultClient {
-  commands: Collection<string, Command>;
+  commands: Collection<string, Command> | undefined;
 }
 
 export const client = new Client();
@@ -46,7 +46,7 @@ const loadCommands = async () => {
     const files = await commandFiles()
     for (const file of files) {
     const command: Command = require(`./commands/${file}`).command;
-    client.commands.set(command.name, command);
+    client.commands?.set(command.name, command);
     console.log(`${file} cargado`);
     }
   } catch (e) {

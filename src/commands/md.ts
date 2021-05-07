@@ -17,7 +17,7 @@ export const command: Command = {
         repeat: { type: "number", alias: "r", default: 1 },
         message: { type: "string", alias: "m", required: true },
       })
-      .fail((msg, err, sin) => {
+      .fail((msg) => {
         console.log(msg);
         return message.channel.send(msg);
       })
@@ -34,7 +34,7 @@ export const command: Command = {
 
     if (argsParsed.repeat < 0)
       return message.channel.send(
-        "Ya se que pusiste un número negativo, no te hagas el gracioso"
+        "Escribiste un número negativo"
       );
     try {
       for (let i = 0; i < argsParsed.repeat; i++) {
@@ -45,7 +45,7 @@ export const command: Command = {
       );
     } catch {
       return message.channel.send(
-        "parece que este usuario tiene bloqueada la opción de recibir mis mensajes"
+        "parece que este usuario tiene bloqueada la opción de recibir mensajes"
       );
     }
   },

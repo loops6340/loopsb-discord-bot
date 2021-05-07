@@ -21,9 +21,9 @@ export const event:EventFunction = {
       .trim()
       .split(/ +/g);
 
-    const command_name = args.shift().toLowerCase();
+    const command_name = args.shift()?.toLowerCase();
 
-    /* Esta función sugnifica que si algún mensaje empieza con algún string del array
+    /* Esta función significa que si algún mensaje empieza con algún string del array
     este retorna verdadero o falso, lo uso para las comparaciones
     */
 
@@ -39,7 +39,7 @@ export const event:EventFunction = {
 
     //Comandos sin prefix
 
-    if (message.mentions.has(client.user.id)) {
+    if (message.mentions.has(client.user?.id!)) {
       message.channel.send(randomElement(responses.responsesToMentions));
     }
 
@@ -51,7 +51,7 @@ export const event:EventFunction = {
     */
 
     if (someMessageBeginsWith(responses.regards.userRegards)) {
-      if (someMessageInclude(message.guild.members.cache.map(user => user.nickname))) {
+      if (someMessageInclude(message.guild?.members.cache.map(user => user.nickname!)!)) {
         message.channel.send(`Que tal!`) 
       } else {
         message.channel.send(randomElement(responses.regards.botRegards))
@@ -72,7 +72,8 @@ export const event:EventFunction = {
       message.channel.send("¿Como que server muerto?");
     }
 
-    /* comandos con prefix, en esta parte van los comandos, lo de abajo es el command 
+    /* 
+    comandos con prefix, en esta parte van los comandos, lo de abajo es el command 
     handler, invoca a los comandos que están en la carpeta commands de más arriba,
     al final de todo funciona igual que cuando escribimos el clasico if(command === 'algo')
     */
@@ -80,10 +81,9 @@ export const event:EventFunction = {
     if (!message.content.startsWith(prefix)) return
   
     const command =
-      client.commands.get(command_name) ||
-      client.commands.find(
-        (cmd) =>
-          cmd.aliases && cmd.aliases.includes(command_name)
+      client.commands?.get(command_name!) ||
+      client.commands?.find(
+        (cmd) => cmd.aliases! && cmd.aliases.includes(command_name!)
       );
 
     if (!command) return;

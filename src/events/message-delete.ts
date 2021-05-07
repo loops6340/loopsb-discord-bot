@@ -17,15 +17,15 @@ export const event:EventFunction = {
 
     if (message.channel.type === "text") {
      
-      const desc = `https://discord.com/channels/${message.guild.id}/${message.channel.id}/`;
+      const desc = `https://discord.com/channels/${message.guild?.id}/${message.channel.id}/`;
    
       const delEmbed = new MessageEmbed()
         .setDescription(`[Ir al canal](${desc})\n${message.content}`)
         .setColor(0xafeeee)
-        .setAuthor(message.author.username, message.author.avatarURL())
-        .setFooter(`${message.guild.name} | #${message.channel.name}`);
+        .setAuthor(message.author.username, message.author.avatarURL()!)
+        .setFooter(`${message.guild?.name} | #${message.channel.name}`);
 
-      const logsChannel = message.guild.channels.cache.find(channel => channel.name.includes('logs'));
+      const logsChannel = message.guild?.channels.cache.find(channel => channel.name.includes('logs'));
 
       if(logsChannel !== undefined) {
         (logsChannel as TextChannel).send(delEmbed);

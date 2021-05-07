@@ -6,6 +6,7 @@ import {
   User,
 } from "discord.js";
 import { Command } from "../index";
+import { Embed } from "../utils/embed-utils";
 
 export const command: Command = {
   name: "avatar",
@@ -18,12 +19,11 @@ export const command: Command = {
 
     if (!args[0]) user = message.author;
     else {
-      const mention = message.mentions.users.first();
-      const name = client.users.cache.find((user) =>
-        user.username.toLocaleLowerCase().includes(args[0])
-      );
-      const id = await client.users.fetch(args[0]);
-      user = mention || name || id;
+      user =  message.mentions.users.first() ||
+      client.users.cache.find((user) =>
+         user.username.toLocaleLowerCase().includes(args[0])
+      )
+      || await client.users.fetch(args[0]);
     }
 
     const avatarLinkInEmbed = (format: AllowedImageFormat) => {
@@ -33,7 +33,7 @@ export const command: Command = {
         size: 1024,
       });
       
-      return `[${format}](${avatarURL})`;
+      return Embed.link(format, avatarURL);
     }
      
 

@@ -21,7 +21,7 @@ export const command: Command = {
         const { name, category, hidden } = command;
         return { name, category, hidden };
       })
-      .filter((cmd) => cmd.hidden != true);
+      .filter((cmd) => cmd.hidden !== true);
 
     const fields: EmbedFieldData[] = categories.map((category) => {
       return {
