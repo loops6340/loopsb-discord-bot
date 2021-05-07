@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import fs from "fs";
+import fs from "fs/promises";
 
 //Cambiar a las categorias que requiera su bot
 
@@ -34,18 +34,27 @@ export class Client extends DefaultClient {
   commands: Collection<string, Command>;
 }
 
-export const client: Client = new Client();
+export const client = new Client();
 client.commands = new Collection();
 
-const commandFiles: string[] = fs
-  .readdirSync(path.join(__dirname, "./commands/"))
-  .filter((file: string) => file.endsWith(".js"));
-
-for (const file of commandFiles) {
-  const command: Command = require(`./commands/${file}`).command;
-  client.commands.set(command.name, command);
-  console.log(`${file} cargado`);
+const commandFiles = async () => {
+  const commands = await fs.readdir(path.join(__dirname, "./commands/"))
+  return commands.filter((file: string) => file.endsWith(".js"));
 }
+const loadCommands = async () => {
+  try {
+    const files = await commandFiles()
+    for (const file of files) {
+    const command: Command = require(`./commands/${file}`).command;
+    client.commands.set(command.name, command);
+    console.log(`${file} cargado`);
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+loadCommands()
 
 export interface EventFunction {
   event: keyof ClientEvents;
@@ -54,22 +63,20 @@ export interface EventFunction {
   run(...args: ClientEvents[keyof ClientEvents]): Promise<void> | void;
 }
 
-async function handleEvents() {
-  const files: string[] = await fs.promises.readdir(
-    path.join(__dirname, "./events/")
-  );
-  files
-    .filter((file) => file.endsWith(".js"))
-    .forEach((file) => {
-      const { disabled, event, once, run }: EventFunction = require(`./events/${file}`).event;
-      if (disabled) return;
-      try {
-        client[once ? "once" : "on"](event, (...args: ClientEvents[typeof event]) => run(...args)
-        );
-      } catch (error) {
-        console.error(error.stack);
-      }
-    });
+const handleEvents = async () => {
+  try {
+    const eventsDir = path.join(__dirname, "./events/")
+    const files: string[] = await fs.readdir(eventsDir);
+    files
+      .filter((file) => file.endsWith(".js"))
+      .map((file) => {
+        const { disabled, event, once, run }: EventFunction = require(`./events/${file}`).event;
+        if (disabled) return;
+        client[once ? "once" : "on"](event, (...args: ClientEvents[typeof event]) => run(...args));
+      }); 
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 handleEvents()

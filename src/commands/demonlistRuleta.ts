@@ -16,7 +16,7 @@ export const command: Command = {
 
   run: async (client: Client, message: Message, args: string[]) => {
     
-    async function newDemon() {
+    const newDemon = async () => {
       
       try {
         
@@ -38,11 +38,8 @@ export const command: Command = {
           .setFooter(`Verificado por ${demon.verifier.name}`);
         
         return embed;
-
       } catch {
-
         return 'Hubo un error, intenta hacer esto de nuevo'
-
       }
     }
     

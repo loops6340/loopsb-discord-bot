@@ -1,3 +1,4 @@
+import { BaseClient } from "discord.js";
 import { client, EventFunction } from "..";
 import { prefix, ownerIds } from "../botconfig.json";
 
@@ -13,12 +14,12 @@ export const event: EventFunction = {
     }));
 
     console.log("Bot ejecutado correctamente.");
-    await client.user.setPresence({
+    client.user.setPresence({
       status: "online",
       activity: {
         name: `${prefix}help | Hecho por ${owners.join(", ")}`,
         type: "PLAYING",
       },
     });
-  },
+  }  
 };

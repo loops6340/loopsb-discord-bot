@@ -11,21 +11,26 @@ export const command: Command = {
   category: "otros",
 
   run: async (client: Client, message: Message, args: string[]) => {
-    const parsedArgs = yargs(args).options({
-      e: { type: "string", alias: 'encode' },
-      d: { type: "string", alias: 'decode' },
-    }).argv
+    try {
+      const parsedArgs = yargs.options({
+        e: { type: "string", alias: "encode" },
+        d: { type: "string", alias: "decode" },
+      }).parse(args)
 
-    if (parsedArgs.e) {
-      const encodedText = encode(parsedArgs.e);
-      message.channel.send(encodedText);
-    } else if (parsedArgs.d) {
-      const decodedText = decode(parsedArgs.d);
-      message.channel.send(decodedText);
-    } else {
-      message.channel.send(
+      if (parsedArgs.e) {
+        const encodedText = encode(parsedArgs.e);
+        message.channel.send(encodedText);
+      } else if (parsedArgs.d) {
+        const decodedText = decode(parsedArgs.d);
+        message.channel.send(decodedText);
+      } else {
+        message.channel.send(
         `escribe bien el comando: ${prefix}morse -e (encode) o -d (decode) {texto}`
-      );
+        );
+      }
+    } catch (error) {
+      message.channel.send(error);
+      console.log(error)
     }
   },
 };

@@ -5,19 +5,13 @@ import { randomElement } from "../utils/others";
 const respuesta = [
   "noOOOOOOOOOOOOOOO",
   "no",
-  "me hiciste cagar de risa con esa pregunta",
-  "¿QUE COSA? *se decepciona*",
   "no lo se",
   "Quizás en un año más.",
   "obviamente si",
   "no se si me estás boludeando o que con esa pregunta",
   "si y que",
   "ok",
-  "loops owner",
-  "xf",
-  "retame a ver quien usa el minimo como multiplo po qliao",
-  "cámara de diputados",
-
+  "interesante"
 ];
 
 export const command:Command = {

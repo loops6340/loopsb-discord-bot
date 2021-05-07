@@ -15,3 +15,6 @@ export const command: Command = {
     message.channel.send(screenshot(args[0]));
   },
 };
+
+// hola loops
+//hola ides

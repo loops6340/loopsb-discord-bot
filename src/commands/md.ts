@@ -10,21 +10,23 @@ export const command: Command = {
   category: "chat",
 
   run: async (client: Client, message: Message, args: string[]) => {
-   
-    const argsParsed = yargs(args).options({
-      user: { type: "string", alias: "u" },
-      repeat: { type: "number", alias: "r", default: 1 },
-      message: { type: "string", alias: "m" },
-    }).argv;
+    
+    const argsParsed = yargs
+      .options({
+        user: { type: "string", alias: "u", required: true },
+        repeat: { type: "number", alias: "r", default: 1 },
+        message: { type: "string", alias: "m", required: true },
+      })
+      .fail((msg, err, sin) => {
+        console.log(msg);
+        return message.channel.send(msg);
+      })
+      .parse(args)
 
-    if (!argsParsed.user || !argsParsed.repeat || !argsParsed.message)
-       return message.channel.send(
-        code(`escribe correctamente el comando, se escribe:
-        ${prefix}md 
-        -u {id del usuario} 
-        -r (opcional) {repeticiones del mensaje, por defecto 1} 
-        -m {mensaje}`, 'py')
-      );
+    const user = (await client.users.fetch(argsParsed.user))
+    
+    if(!argsParsed.message || !argsParsed.repeat || !argsParsed.user) return;
+
     if (argsParsed.repeat > 50)
       return message.channel.send(
         "Escribiste un número demasiado grande (máximo 50)"
@@ -36,12 +38,10 @@ export const command: Command = {
       );
     try {
       for (let i = 0; i < argsParsed.repeat; i++) {
-        (await client.users.fetch(argsParsed.user)).send(argsParsed.message);
+        user.send(argsParsed.message);
       }
       return message.channel.send(
-        `Enviando MD's a ${
-          (await client.users.fetch(argsParsed.user)).username
-        } ${argsParsed.repeat} veces`
+        `Enviando ${argsParsed.repeat} mensaje(s) ${user.username}`
       );
     } catch {
       return message.channel.send(
