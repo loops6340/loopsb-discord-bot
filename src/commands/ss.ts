@@ -6,7 +6,7 @@ export const command: Command = {
   category: "otros",
 
   run: async (client, message, args) => {
-    if (!message.content) return message.channel.send("escribe una url");
+    if (!args[0]) return message.channel.send("escribe una url");
     function screenshot(url: string) {
       return new MessageAttachment(
         `http://api.screenshotlayer.com/api/capture?access_key=74d03ed8e6435591e4e0876f85afa1f6&url=${url}&viewport=1280x720`
