@@ -21,7 +21,7 @@ export const command: Command = {
     else {
       user =  message.mentions.users.first() ||
       client.users.cache.find((user) =>
-         user.username.toLocaleLowerCase().includes(args[0])
+         user.username.toLocaleLowerCase().includes(args[0].toLocaleLowerCase())
       )
       || await client.users.fetch(args[0]);
     }
@@ -41,9 +41,7 @@ export const command: Command = {
       format = avatarLinkInEmbed("gif");
     } else {
       const formats = ['png', 'jpg', 'webp', 'jpeg']
-      format = formats.map((format) => {
-        return avatarLinkInEmbed(format as AllowedImageFormat)
-      }).join(' | ')
+      format = formats.map((format) => avatarLinkInEmbed(format as AllowedImageFormat)).join(' | ')
     }
 
     const embed = new MessageEmbed()

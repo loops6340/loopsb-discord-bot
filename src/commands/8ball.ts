@@ -30,7 +30,7 @@ export const command:Command = {
       .addField("A su pregunta", `${text}`)
       .addField("Mi respuesta", `${random}`)
       .setColor("RANDOM");
-    message.channel.send(embed);
+    message.channel.send({ embed });
   }
 
 }
