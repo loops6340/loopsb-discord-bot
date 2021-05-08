@@ -1,6 +1,7 @@
 import { Message, MessageEmbed, TextChannel } from "discord.js";
 
-import { client, EventFunction } from '..'
+import { EventFunction } from '..'
+import { Embed } from "../utils/embed-utils";
 
 export const event:EventFunction = {
 
@@ -20,7 +21,7 @@ export const event:EventFunction = {
       const desc = `https://discord.com/channels/${message.guild?.id}/${message.channel.id}/`;
    
       const delEmbed = new MessageEmbed()
-        .setDescription(`[Ir al canal](${desc})\n${message.content}`)
+        .setDescription(`${Embed.link('Ir al canal', desc)}\n${message.content}`)
         .setColor(0xafeeee)
         .setAuthor(message.author.username, message.author.avatarURL()!)
         .setFooter(`${message.guild?.name} | #${message.channel.name}`);
