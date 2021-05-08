@@ -15,7 +15,7 @@ export const event: EventFunction = {
     client.user?.setPresence({
       status: "online",
       activity: {
-        name: `${prefix}help | Hecho por ${owners.join()}`,
+        name: `${prefix}help | Hecho por ${owners.join(', ')}`,
         type: "PLAYING",
       },
     });
