@@ -11,21 +11,24 @@ export const command: Command = {
     
     let options = [
       {
-        group: '1 opt'
-      },
-      {
-        names: ["user", 'u'],
+        names: ["user-input", 'u'],
         type: 'string'
       },
       {
-        group: '2 opt'
+        names:  ["text-input", 't'],
+        type: 'string'
       },
       {
-        names:  ["text", 't'],
+        names: ["exp-input", "e"],
         type: 'string'
       }
     ]
-
+    //ya funciona jsjs
+    //lo malo es que solo agarra la palabra "este"
+    //Pero debería agarrar todo lo que está adelante
+    
+//ya se que pasa
+// bien
     var opts = dashdash.parse({options: options});
     const parser = dashdash.createParser({options})
     console.log(opts)// es lo mismo, poner el {options} es simplificar {options:options} en javascript
@@ -33,12 +36,13 @@ export const command: Command = {
 // argv son los args que le pasa desde la consola jsjs
 //como se supone que funciona
 // no sé, pero estoy viendo cómo pasar los args del mensaje a
+//bueno, ahora tendría que cambiar el process.argv por los args de un mensaje de discord
     try {
-       let opts = parser.parse(process.argv);
-       console.log(process.argv)
+       let opts = parser.parse({ slice: 0, argv: args });
        console.log(opts)
        console.log(opts._args)
        console.log(opts.user)
+       
     } catch (e) {
       console.log(e)
       message.channel.send("Error")
