@@ -1,7 +1,7 @@
 import { Client, Message, TextChannel } from "discord.js";
-import { Command } from "../index";
+import { Command } from "../../index";
 
-import config from '../botconfig.json'
+import config from '../../botconfig.json'
 
 /* 
   Resumen de la funcionalidad de este comando: sirve para hacer que el bot diga algo 
@@ -12,9 +12,8 @@ import config from '../botconfig.json'
 export const command: Command = {
   name: "msg",
   hidden: true,
-  category: 'chat',
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(client, message, args) {
   
     /* No cualquiera puede ejecutar esto, si la persona no está autorizada se retorna 
     este mensaje y no se analiza más del comando */

@@ -87,10 +87,10 @@ export const event:EventFunction = {
       );
 
     if (!command) return;
-    try {
-      command.run(client, message, args);
-    } catch (error) {
-      throw new Error("Hubo un problema para cargar los comandos");
-    }
+    
+      message.channel.startTyping()
+      await command.run(client, message, args)
+      message.channel.stopTyping()
+  
   },
 };

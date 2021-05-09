@@ -1,13 +1,13 @@
 import { getDemonByName, getDemonByPosition } from "demonlist";
 import { Client, Message, MessageEmbed } from "discord.js";
-import { Command } from "../index";
-import { Embed } from "../utils/embed-utils";
+import { Command } from "../../index";
+import { Embed } from "../../utils/embed-utils";
 
 export const command: Command = {
   name: "demonlist",
-  category: "gd",
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(_client, message, args) {
+    
     let entrada = args.join(" ");
     let demon;
 

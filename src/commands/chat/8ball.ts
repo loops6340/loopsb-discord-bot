@@ -1,6 +1,6 @@
 import { Client, Message, MessageEmbed } from "discord.js";
-import { Command } from "../index";
-import { randomElement } from "../utils/others";
+import { Command } from "../../index";
+import { randomElement } from "../../utils/others";
 
 const respuesta = [
   "noOOOOOOOOOOOOOOO",
@@ -18,9 +18,9 @@ export const command:Command = {
 
   name: "8ball",
   aliases: ["bola8"],
-  category: 'chat',
   
-  run: async (client:Client, message:Message, args:string[]) => {
+  async run(client, message, args) {
+
     const text = args.join(" ");
    
     let random = randomElement(respuesta)
@@ -32,5 +32,4 @@ export const command:Command = {
       .setColor("RANDOM");
     message.channel.send({ embed });
   }
-
 }

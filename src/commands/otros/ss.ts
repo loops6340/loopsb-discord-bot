@@ -1,11 +1,10 @@
 import { MessageAttachment } from "discord.js";
-import { Command } from "../index";
+import { Command } from "../../index";
 
 export const command: Command = {
   name: "ss",
-  category: "otros",
 
-  run: async (client, message, args) => {
+  async run(_client, message, args) {
     if (!args[0]) return message.channel.send("escribe una url");
     function screenshot(url: string) {
       return new MessageAttachment(

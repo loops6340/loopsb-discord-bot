@@ -29,7 +29,7 @@ export const event:EventFunction = {
       const logsChannel = message.guild?.channels.cache.find(channel => channel.name.includes('logs'));
 
       if(logsChannel !== undefined) {
-        (logsChannel as TextChannel).send(delEmbed);
+        (<TextChannel>logsChannel).send(delEmbed);
       } else {
         return console.log('canal no encontrado')
       }

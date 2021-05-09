@@ -7,15 +7,14 @@ import {
   MessageReaction,
   User,
 } from "discord.js";
-import { Command } from "../index";
-import { Embed } from "../utils/embed-utils";
+import { Command } from "../../index";
+import { Embed } from "../../utils/embed-utils";
 
 export const command: Command = {
   name: "ruleta",
   aliases: ["ruletademon", "ruletademongd"],
-  category: "gd",
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(_client, message) {
     
     const newDemon = async () => {
       

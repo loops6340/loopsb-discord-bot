@@ -1,13 +1,11 @@
-import { Client, Message } from "discord.js";
-import { Command } from "../index";
+import { Command } from "../../index";
 import path from "path";
 
 export const command: Command = {
   
   name: "sans",
-  category: 'vc',
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(_client, message, args) {
   
     const duración = args[0];
 

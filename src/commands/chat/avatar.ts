@@ -5,15 +5,15 @@ import {
   MessageEmbed,
   User,
 } from "discord.js";
-import { Command } from "../index";
-import { Embed } from "../utils/embed-utils";
+import { Command } from "../../index";
+import { Embed } from "../../utils/embed-utils";
 
 export const command: Command = {
   name: "avatar",
   aliases: ["pfp"],
-  category: 'chat',
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(client, message, args) {
+
     let user: User;
     let format: string;
 
@@ -40,8 +40,8 @@ export const command: Command = {
     if (user.displayAvatarURL({ dynamic: true }).includes(".gif")) {
       format = avatarLinkInEmbed("gif");
     } else {
-      const formats = ['png', 'jpg', 'webp', 'jpeg']
-      format = formats.map((format) => avatarLinkInEmbed(format as AllowedImageFormat)).join(' | ')
+      const formats = ['png', 'jpg', 'webp', 'jpeg'] as const
+      format = formats.map((format) => avatarLinkInEmbed(format)).join(' | ')
     }
 
     const embed = new MessageEmbed()

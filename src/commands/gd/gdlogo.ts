@@ -1,14 +1,13 @@
 import axios from "axios";
 import { Client, Message, MessageAttachment } from "discord.js";
-import { Command } from "../index";
+import { Command } from "../../index";
 
 export const command: Command = {
   
   name: "gdlogo",
   aliases: ["gdcolon", "gdjuniper", "gdloops"],
-  category: 'gd',
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(_client, message, args) {
     
     if (!args[0]) return message.channel.send("No pusiste nada :c");
 

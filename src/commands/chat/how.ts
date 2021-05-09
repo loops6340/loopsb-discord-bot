@@ -1,13 +1,12 @@
 import { Client, Message, MessageEmbed } from "discord.js";
-import { Command } from "../index";
+import { Command } from "../../index";
 
 export const command: Command = {
  
   name: "how",
   aliases: ["soy"],
-  category: 'chat',
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(_client, message, args) {
     if (!args[0]) return message.channel.send("pon algo");
 
     let random = Math.round(Math.random() * 100);

@@ -12,22 +12,15 @@ dotenv.config();
 
 import fs from "fs/promises";
 
-//Cambiar a las categorias que requiera su bot
-
-export const categories = ["chat", "vc", "gd", "otros"] as const;
+export const categories = ["chat", "vc", "gd", "otros", "imagenes"] as const;
 
 type Category = typeof categories[number];
 
 export interface Command {
   name: string;
   aliases?: string[];
-  category: Category;
   hidden?: boolean;
-  run(
-    client: Client,
-    message: Message,
-    args: string[]
-  ): Promise<void> | void | Message | Promise<Message>;
+  run(client: Client,message: Message,args: string[]): Promise<void> | Promise<Message>;
 }
 
 export class Client extends DefaultClient {
@@ -37,24 +30,26 @@ export class Client extends DefaultClient {
 export const client = new Client();
 client.commands = new Collection();
 
-const commandFiles = async () => {
-  const commands = await fs.readdir(path.join(__dirname, "./commands/"))
-  return commands.filter((file: string) => file.endsWith(".js"));
-}
+export const commandFiles = async () => {
+  const dirs = await fs.readdir(path.join(__dirname, "./commands/"));
+  const commands = Promise.all(dirs.map(async (dir) => {
+    const category = dir
+    const commands = await fs.readdir(path.join(__dirname, `./commands/${dir}`))
+    return { category, commands }
+  }))
+  return await commands
+};
 const loadCommands = async () => {
-  try {
-    const files = await commandFiles()
-    for (const file of files) {
-    const command: Command = require(`./commands/${file}`).command;
-    client.commands?.set(command.name, command);
-    console.log(`${file} cargado`);
+  for (const files of await commandFiles()) {
+    for (const file of files.commands) {
+      const command: Command = require(`./commands/${files.category}/${file}`).command;
+      client.commands?.set(command.name, command);
+      console.log(`${file} cargado`);
     }
-  } catch (e) {
-    throw new Error(e);
   }
-}
+};
 
-loadCommands()
+loadCommands();
 
 export interface EventFunction {
   event: keyof ClientEvents;
@@ -65,20 +60,19 @@ export interface EventFunction {
 
 const handleEvents = async () => {
   try {
-    const eventsDir = path.join(__dirname, "./events/")
-    const files: string[] = await fs.readdir(eventsDir);
-    files
-      .filter((file) => file.endsWith(".js"))
-      .map((file) => {
-        const { disabled, event, once, run }: EventFunction = require(`./events/${file}`).event;
-        if (disabled) return;
-        client[once ? "once" : "on"](event, (...args: ClientEvents[typeof event]) => run(...args));
-      }); 
+    const eventsDir = path.join(__dirname, "./events/");
+    const files: string[] = await fs.readdir(eventsDir)
+    const events = files.filter((file) => file.endsWith(".js"));
+    for (const eventFile of events) {
+      const { disabled, event, once, run }: EventFunction = require(`./events/${eventFile}`).event;
+      if (disabled) return;
+      client[once ? "once" : "on"](event,(...args: ClientEvents[typeof event]) => run(...args));
+    }
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
-handleEvents()
+handleEvents();
 
 client.login(process.env.TOKEN);

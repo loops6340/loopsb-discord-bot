@@ -1,13 +1,12 @@
 import { Client, Message } from "discord.js";
-import { Command } from "../index";
-import { sleep } from "../utils/others";
+import { Command } from "../../index";
+import { sleep } from "../../utils/others";
 
 export const command:Command = {
   name: "contar",
   aliases: ["cuenta"],
-  category: 'otros',
 
-  run: async (client: Client, message: Message, args: string[]) => {
+  async run(_client, message, args) {
     enum valor {
       valorInicial,
       valorFinal,
